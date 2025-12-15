@@ -18,6 +18,7 @@ struct txtmac *minit_applicator(struct txtmac *tm, charop *op)
     struct applicator *priv = malloc(sizeof(struct applicator));
     if (priv == NULL) return NULL;
 
+    if (op == NULL) return NULL;
     priv->op = op;
     priv->src = tm;
 
