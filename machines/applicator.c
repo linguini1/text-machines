@@ -15,10 +15,12 @@ static char applicator_next(struct txtmac *tm)
 
 struct txtmac *minit_applicator(struct txtmac *tm, charop *op)
 {
+    if (op == NULL) return NULL;
+    if (tm == NULL) return NULL;
+
     struct applicator *priv = malloc(sizeof(struct applicator));
     if (priv == NULL) return NULL;
 
-    if (op == NULL) return NULL;
     priv->op = op;
     priv->src = tm;
 
