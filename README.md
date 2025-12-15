@@ -2,6 +2,8 @@
 
 A silly interface for creating state machines that act on ASCII text inputs.
 
+To read documentation about the provided text machines, see [this document](./machines/docs.md)
+
 ## Building
 
 This project is primarily a library of text machine operations and the necessary tools to write your own. However, it
@@ -13,6 +15,27 @@ To build and run the executable, simply use
 $ make
 $ ./tmac
 ```
+
+## Testing
+
+To run the test cases and view their results in the console, use
+
+```console
+$ make check
+```
+
+Individual test suites can be run with
+
+```console
+$make tests/test_name.test
+```
+This is basically equivalent to the test path but with the `.c` suffix replaced with `.test`.
+
+Each test case has its own in-code documentation which describes what the test case is testing. The test suite
+collections have a top-level comment at the beginning of the file to describe the overall test suite.
+
+To add your own tests, just create a new file in the `tests/` directory and fill it with test cases. You can use the
+other test cases as examples. It will automatically be executable using the `make` commands above.
 
 ## Structure
 
