@@ -15,6 +15,7 @@ struct charfile
 static char file_next(struct txtmac *tm)
 {
     struct charfile *priv = (struct charfile *)tm;
+    if (tm == NULL) return EOF;
 
     /* If there are buffered contents left, use those */
 

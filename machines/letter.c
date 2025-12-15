@@ -13,6 +13,7 @@ struct letter
 static char letter_next(struct txtmac *tm)
 {
     struct letter *priv = (struct letter *)tm;
+    if (tm == NULL) return EOF;
 
     /* Supply over */
 

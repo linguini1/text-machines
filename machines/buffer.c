@@ -11,6 +11,7 @@ struct bufmac
 static char buf_next(struct txtmac *tm)
 {
     struct bufmac *priv = (struct bufmac *)tm;
+    if (tm == NULL) return EOF;
 
     if (priv->idx < priv->n)
         {

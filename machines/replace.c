@@ -23,6 +23,7 @@ static char replace_next(struct txtmac *tm)
 {
     char c;
     struct replace *priv = (struct replace *)tm;
+    if (tm == NULL) return EOF;
 
     for (;;)
         {

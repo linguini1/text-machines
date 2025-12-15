@@ -70,6 +70,7 @@ static void jumble_nextstate(struct jumbler *j)
 static char jumbler_next(struct txtmac *tm)
 {
     struct jumbler *priv = (struct jumbler *)tm;
+    if (tm == NULL) return EOF;
 
     for (;;)
         {

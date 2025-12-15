@@ -10,6 +10,7 @@ struct applicator
 static char applicator_next(struct txtmac *tm)
 {
     struct applicator *priv = (struct applicator *)(tm);
+    if (tm == NULL) return EOF;
     return priv->op(priv->src->next(priv->src));
 }
 

@@ -15,6 +15,7 @@ static char fd_next(struct txtmac *tm)
 {
     ssize_t bread;
     struct fdmac *priv = (struct fdmac *)tm;
+    if (tm == NULL) return EOF;
 
     /* Return buffered characters */
 
