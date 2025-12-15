@@ -14,24 +14,30 @@ MAINOBJ = $(patsubst %.c,%.o,$(CMAIN))
 
 TESTSRCS = $(wildcard tests/*.c)
 TESTS = $(patsubst %.c,%,$(TESTSRCS))
+TESTCASES = $(patsubst %,%.test,$(TESTS))
 
 WORKDIR = $(realpath .)
 
+# Recipe for making the output binary
 all: $(OUT)
 
-run: $(OUT)
-	./$(OUT) $(WORKDIR)/examples/pig.txt
+# Recipe for running all test cases
+check: clean $(TESTCASES)
 
-test: clean $(TESTS)
-	$(foreach t,$(TESTS),$(WORKDIR)/$t)
+# Recipe for running a test binary
+%.test: %
+	@$(WORKDIR)/$<
 
+# Recipe for creating a single test binary
 $(TESTS): $(OBJS)
-	$(CC) $(CFLAGS) $(INCLUDES) -o $@.o -c $@.c
-	$(CC) $(OBJS) $@.o -o $@
+	@$(CC) $(CFLAGS) $(INCLUDES) -o $@.o -c $@.c
+	@$(CC) $(OBJS) $@.o -o $@
 
+# Create the main output binary for quick testing
 $(OUT): $(OBJS) $(MAINOBJ)
 	$(CC) $(OBJS) $(MAINOBJ) -o $(OUT)
 
+# Compile a C file
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -o $@ -c $<
 
