@@ -2,6 +2,8 @@
 #include <stdio.h>
 
 #define __STR(x) #x
+#define _RED(msg) "\033[31;1;4m" msg "\033[0m"
+#define _GREEN(msg) "\033[32;1;4m" msg "\033[0m"
 
 /* Test definitions */
 
@@ -12,23 +14,28 @@
     unsigned __t_run = 0;                                                      \
     do                                                                         \
         {                                                                      \
-            printf("RUNNING %s TESTS\n\n", __FILE_NAME__);                     \
+            printf(                                                            \
+                "=========================================================\n"  \
+                "RUNNING TESTS '"__FILE_NAME__                                 \
+                "'\n"                                                          \
+                "========================================================="    \
+                "\n\n");                                                       \
         }                                                                      \
     while (0)
 
 #define end_tests()                                                            \
     do                                                                         \
         {                                                                      \
-            printf(                                                            \
-                "\n=====Summary=====\nPassed: %u\nFailed: %u\nTotal: %u\n\n",  \
-                __t_passed, __t_run - __t_passed, __t_run);                    \
+            printf("\nPassed: "_GREEN("%u") "\tFailed: "_RED(                  \
+                       "%u") "\tTotal: %u\n",                                  \
+                   __t_passed, __t_run - __t_passed, __t_run);                 \
             if (__t_run - __t_passed != 0)                                     \
                 {                                                              \
-                    fprintf(stderr, "Result: FAIL!\n");                        \
+                    fprintf(stderr, "Result: "_RED("FAIL!") "\n");             \
                 }                                                              \
             else                                                               \
                 {                                                              \
-                    printf("Result: PASS!\n");                                 \
+                    printf("Result: "_GREEN("PASS!") "\n");                    \
                 }                                                              \
         }                                                                      \
     while (0)
@@ -39,12 +46,12 @@
             int pass = name();                                                 \
             if (pass)                                                          \
                 {                                                              \
-                    printf("%s::PASS\n", __STR(name));                         \
+                    printf(__STR(name) "::"_GREEN("PASS") "\n");               \
                     __t_passed++;                                              \
                 }                                                              \
             else                                                               \
                 {                                                              \
-                    fprintf(stderr, "%s::FAIL\n", __STR(name));                \
+                    fprintf(stderr, __STR(name) "::"_RED("FAIL") "\n");        \
                 }                                                              \
             __t_run++;                                                         \
         }                                                                      \
