@@ -32,9 +32,8 @@ static char replace_next(struct txtmac *tm)
                     /* If the next character starts a match, change states */
 
                     c = priv->src->next(priv->src);
-                    if (c == priv->old[0])
+                    if (c == priv->old[0] && priv->old[0] != '\0')
                         {
-                            priv->oidx++;
                             priv->state = STATE_MATCHING;
                             break;
                         }
@@ -53,6 +52,7 @@ static char replace_next(struct txtmac *tm)
                              * (complete match) move to outputting.
                              */
 
+                            priv->nidx = 0;
                             priv->state = STATE_OUTREPLACEMENT;
                             break;
                         }
@@ -81,7 +81,7 @@ static char replace_next(struct txtmac *tm)
                      * failed.
                      */
 
-                    if (priv->nidx <= priv->oidx)
+                    if (priv->nidx < priv->oidx)
                         {
                             return priv->old[priv->nidx++];
                         }
@@ -90,6 +90,8 @@ static char replace_next(struct txtmac *tm)
                      * character which caused the match to fail.
                      */
 
+                    priv->nidx = 0;
+                    priv->oidx = 0;
                     priv->state = STATE_NO_MATCH;
                     return c;
 
@@ -133,11 +135,11 @@ static char replace_next(struct txtmac *tm)
 struct txtmac *minit_replace(struct txtmac *tm, const char *old,
                              const char *new)
 {
-    struct replace *priv = malloc(sizeof(struct replace));
-    if (priv == NULL) return NULL;
-
     if (tm == NULL) return NULL;
     if (old == NULL) return NULL;
+
+    struct replace *priv = malloc(sizeof(struct replace));
+    if (priv == NULL) return NULL;
 
     priv->src = tm;
     priv->old = old;
