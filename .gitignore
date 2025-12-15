@@ -9,3 +9,8 @@ tmac
 # Input files
 *.txt
 !examples/*.txt
+
+# Tests
+tests/*
+!tests/*.h
+!tests/*.c

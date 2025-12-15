@@ -22,10 +22,11 @@ static char buf_next(struct txtmac *tm)
 
 struct txtmac *minit_buf(const char *buf, size_t n)
 {
+    if (buf == NULL) return NULL;
+
     struct bufmac *priv = malloc(sizeof(struct bufmac));
     if (priv == NULL) return NULL;
 
-    if (buf == NULL) return NULL;
     priv->buf = buf;
     priv->n = n;
     priv->idx = 0;

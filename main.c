@@ -17,8 +17,6 @@
         }                                                                      \
     while (0)
 
-static char toupper_c(char c) { return toupper(c); }
-
 int main(int argc, char **argv)
 {
     FILE *file = stdin;

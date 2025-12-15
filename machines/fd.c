@@ -40,10 +40,10 @@ static char fd_next(struct txtmac *tm)
 
 struct txtmac *minit_fd(int fd)
 {
+    if (fd < 0) return NULL;
+
     struct fdmac *priv = malloc(sizeof(struct fdmac));
     if (priv == NULL) return NULL;
-
-    if (fd < 0) return NULL;
 
     priv->fd = fd;
     priv->count = 0;

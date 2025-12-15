@@ -1,27 +1,43 @@
 CC = gcc
 CFLAGS = -Wall -Wextra
 
-CSRCS = main.c
-CSRCS += $(wildcard machines/*.c)
-CSRCS += $(wildcard common/*.c)
-
 INCLUDES = -I common
 
-OBJS = $(patsubst %.c,%.o,$(CSRCS))
-
 OUT = tmac
+
+CMAIN = main.c
+CSRCS = $(wildcard machines/*.c)
+CSRCS += $(wildcard common/*.c)
+
+OBJS = $(patsubst %.c,%.o,$(CSRCS))
+MAINOBJ = $(patsubst %.c,%.o,$(CMAIN))
+
+TESTSRCS = $(wildcard tests/*.c)
+TESTS = $(patsubst %.c,%,$(TESTSRCS))
+
+WORKDIR = $(realpath .)
 
 all: $(OUT)
 
 run: $(OUT)
-	./$(OUT) $(realpath .)/examples/pig.txt
+	./$(OUT) $(WORKDIR)/examples/pig.txt
 
-$(OUT): $(OBJS)
-	$(CC) $(OBJS) -o $(OUT)
+test: clean $(TESTS)
+	$(foreach t,$(TESTS),$(WORKDIR)/$t)
+
+$(TESTS): $(OBJS)
+	$(CC) $(CFLAGS) $(INCLUDES) -o $@.o -c $@.c
+	$(CC) $(OBJS) $@.o -o $@
+
+$(OUT): $(OBJS) $(MAINOBJ)
+	$(CC) $(OBJS) $(MAINOBJ) -o $(OUT)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -o $@ -c $<
 
 clean:
-	@rm $(OBJS)
-	@rm $(OUT)
+	@$(RM) $(OBJS)
+	@$(RM) $(MAINOBJ)
+	@$(RM) $(OUT)
+	@$(RM) $(TESTS)
+	@$(RM) tests/*.o
