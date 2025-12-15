@@ -13,6 +13,9 @@ OUT = tmac
 
 all: $(OUT)
 
+run: $(OUT)
+	./$(OUT) $(realpath .)/examples/pig.txt
+
 $(OUT): $(OBJS)
 	$(CC) $(OBJS) -o $(OUT)
 
