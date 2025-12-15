@@ -9,6 +9,7 @@
 /* Generative machines */
 
 struct txtmac *minit_file(FILE *src);
+struct txtmac *minit_fd(int fd);
 struct txtmac *minit_letter(char letter, size_t count);
 
 /* Filtering machines */

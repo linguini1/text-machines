@@ -47,11 +47,9 @@ static char file_next(struct txtmac *tm)
 struct txtmac *minit_file(FILE *src)
 {
     struct charfile *priv = malloc(sizeof(struct charfile));
-    if (priv == NULL)
-        {
-            return NULL;
-        }
+    if (priv == NULL) return NULL;
 
+    if (src == NULL) return NULL;
     priv->src = src;
     priv->count = 0;
     priv->idx = 0;

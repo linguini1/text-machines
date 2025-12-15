@@ -1,5 +1,7 @@
 #include <ctype.h>
 #include <errno.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -11,8 +13,9 @@ static char toupper_c(char c) { return toupper(c); }
 
 int main(int argc, char **argv)
 {
-    /* Open input file to transform */
+    /* Turn the input file into a generative text machine */
 
+#if 0
     FILE *file = fopen("examples/pig.txt", "r");
     if (file == NULL)
         {
@@ -20,9 +23,18 @@ int main(int argc, char **argv)
             return -1;
         }
 
+    struct txtmac *stream = minit_file(file);
+#endif
+
+    int fd = open("examples/pig.txt", O_RDONLY);
+    if (fd < 0)
+        {
+            fprintf(stderr, "Couldn't open file: %s\n", strerror(errno));
+        }
+    struct txtmac *stream = minit_fd(fd);
+
     /* Create our operations to apply */
 
-    struct txtmac *stream = minit_file(file);
     struct txtmac *tm = minit_jumbler(stream);
 
     /* Perform silly little operations on the text and output the result to the
@@ -33,6 +45,6 @@ int main(int argc, char **argv)
 
     mdestroy(stream);
     mdestroy(tm);
-    fclose(file);
+    close(fd);
     return 0;
 }
