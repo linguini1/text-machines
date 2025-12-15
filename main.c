@@ -13,7 +13,7 @@ int main(int argc, char **argv)
 {
     /* Open input file to transform */
 
-    FILE *file = fopen("examples/hello.txt", "r");
+    FILE *file = fopen("examples/pig.txt", "r");
     if (file == NULL)
         {
             fprintf(stderr, "Couldn't open file: %s\n", strerror(errno));
@@ -23,7 +23,7 @@ int main(int argc, char **argv)
     /* Create our operations to apply */
 
     struct txtmac *stream = minit_file(file);
-    struct txtmac *tm = minit_applicator(stream, toupper_c);
+    struct txtmac *tm = minit_jumbler(stream);
 
     /* Perform silly little operations on the text and output the result to the
      * console

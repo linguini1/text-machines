@@ -22,6 +22,8 @@ struct jumbler
     char lastchar;
     char buf[JUMBLE_BUFSIZ];
     size_t bufidx;
+    size_t count;
+    bool output;
 };
 
 static void shuffle(char *arr, size_t n)
@@ -42,7 +44,7 @@ static void shuffle(char *arr, size_t n)
         }
 }
 
-static void nextstate(struct jumbler *j)
+static void jumble_nextstate(struct jumbler *j)
 {
     bool alpha = isalpha(j->lastchar);
     switch (j->state)
@@ -68,7 +70,53 @@ static void nextstate(struct jumbler *j)
 static char jumbler_next(struct txtmac *tm)
 {
     struct jumbler *priv = (struct jumbler *)tm;
-    return '0'; // TODO
+
+    for (;;)
+        {
+            /* If we can output a buffered character, output one */
+
+            if (priv->output && priv->bufidx < priv->count)
+                {
+                    return priv->buf[priv->bufidx++];
+                }
+            else if (priv->output)
+                {
+                    /* All characters output. Return the final non-alpha char
+                     * which triggered the end of word detection.
+                     */
+
+                    priv->count = 0;
+                    priv->output = false;
+                    return priv->lastchar;
+                }
+
+            /* Get the next character to work with */
+
+            priv->lastchar = priv->src->next(priv->src);
+            jumble_nextstate(priv);
+
+            /* Execute state logic, outputting characters if we can */
+
+            switch (priv->state)
+                {
+                case STATE_START:
+                    /* Purposeful nothing to do */
+                    break;
+                case STATE_ALPHA_N:
+                    priv->buf[priv->count++] = priv->lastchar;
+                    break;
+                case STATE_ALPHA_FIRST:
+                case STATE_NONALPHA:
+                    return priv->lastchar;
+                case STATE_JUMBLE:
+                    shuffle(priv->buf, priv->count - 1);
+                    priv->output = true;
+                    priv->bufidx = 0;
+                    break;
+                }
+        }
+
+    return EOF;
 }
 
 struct txtmac *minit_jumbler(struct txtmac *tm)
@@ -81,7 +129,9 @@ struct txtmac *minit_jumbler(struct txtmac *tm)
 
     priv->src = tm;
     priv->bufidx = 0;
-    priv->lastchar = '0'; // TODO: what is a good start?
+    priv->count = 0;
+    priv->output = false;
+    priv->lastchar = '\0';
 
     priv->tm.priv = priv;
     priv->tm.next = jumbler_next;
