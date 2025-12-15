@@ -56,6 +56,7 @@ size_t sink_buf(struct txtmac *tm, char *buf, size_t n)
             buf[i] = tm->next(tm);
             if (buf[i] == EOF)
                 {
+                    buf[i] = '\0';
                     break;
                 }
         }
