@@ -1,0 +1,11 @@
+# Build stuff
+compile_commands.json
+.cache/
+
+# C artifacts
+*.o
+tmac
+
+# Input files
+*.txt
+!examples/*.txt

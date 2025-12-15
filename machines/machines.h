@@ -1,0 +1,21 @@
+#ifndef _MACHINES_H_
+#define _MACHINES_H_
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "api.h"
+
+/* Generative machines */
+
+struct txtmac *minit_file(FILE *src);
+struct txtmac *minit_letter(char letter, size_t count);
+
+/* Filtering machines */
+
+typedef char(charop)(char);
+
+struct txtmac *minit_applicator(struct txtmac *tm, charop *op);
+struct txtmac *minit_jumbler(struct txtmac *tm);
+
+#endif // _MACHINES_H_
