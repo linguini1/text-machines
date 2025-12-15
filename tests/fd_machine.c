@@ -24,6 +24,8 @@ testcase(test_helloworld_fd)
     assert(fdmac->next(fdmac) == 'e');
     assert(fdmac->next(fdmac) == 'l');
 
+    mdestroy(fdmac);
+    close(fd);
     return 1;
 }
 
