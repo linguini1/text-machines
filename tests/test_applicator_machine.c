@@ -1,6 +1,11 @@
+/* This test suite is meant to verify the functionality of the "applicator" text
+ * machine, which applies a function to all of the characters in its input
+ * stream. Both the machine's initialization and output behaviour are tested.
+ */
+#include <ctype.h>
+
 #include "../machines/machines.h"
 #include "test.h"
-#include <ctype.h>
 
 static const char test_text[] =
     "This is some test text. It has (?) letters and 3 "
@@ -14,6 +19,9 @@ static struct txtmac *dummy_stream(void)
 static char tolower_c(char c) { return tolower(c); }
 static char toupper_c(char c) { return toupper(c); }
 
+/* Verify that passing a lower case operation to the applicator results in the
+ * backing buffer text being output entirely in lower case.
+ */
 testcase(test_lower)
 {
     struct txtmac *stream = dummy_stream();
@@ -33,6 +41,9 @@ testcase(test_lower)
     return 1;
 }
 
+/* Verify that passing an upper case operation to the applicator results in the
+ * backing buffer text being output entirely in upper case.
+ */
 testcase(test_upper)
 {
     struct txtmac *stream = dummy_stream();
@@ -52,6 +63,9 @@ testcase(test_upper)
     return 1;
 }
 
+/* Verify that in the error case of passing a NULL operation, the returned text
+ * machine is also NULL.
+ */
 testcase(test_null_op)
 {
     struct txtmac *stream = dummy_stream();
@@ -63,6 +77,9 @@ testcase(test_null_op)
     return 1;
 }
 
+/* Verify that in the error case of passing a NULL input stream, the returned
+ * text machine is also NULL.
+ */
 testcase(test_null_stream)
 {
     struct txtmac *tm = minit_applicator(NULL, tolower_c);

@@ -1,3 +1,7 @@
+/* This test suite is meant to verify the functionality of the "jumbler" text
+ * machine, which shuffles everything but the first and last characters of every
+ * word. Both the machine's initialization and output behaviour are tested.
+ */
 #include <ctype.h>
 #include <string.h>
 
@@ -24,6 +28,9 @@ static struct txtmac *short_stream(void)
     return minit_buf(short_test, sizeof(short_test));
 }
 
+/* Verify that in the error case when the input stream is NULL, the returned
+ * text machine is NULL as well.
+ */
 testcase(test_null_stream)
 {
     struct txtmac *tm = minit_jumbler(NULL);
@@ -31,6 +38,10 @@ testcase(test_null_stream)
     return 1;
 }
 
+/* Verify for the short text stream that after jumbling, all of the non-alpha
+ * numeric characters are in the same place, and that the first and last letters
+ * of words are in the same place.
+ */
 testcase(test_jumble_short)
 {
     char buffer[sizeof(short_test)];
@@ -65,6 +76,10 @@ testcase(test_jumble_short)
     return 1;
 }
 
+/* Verify for the long text stream that after jumbling, all of the non-alpha
+ * numeric characters are in the same place, and that the first and last letters
+ * of words are in the same place.
+ */
 testcase(test_jumble_long)
 {
     char buffer[sizeof(long_test)];
@@ -99,6 +114,9 @@ testcase(test_jumble_long)
     return 1;
 }
 
+/* Verify for the short text stream with a seeded (deterministic) random
+ * library, the jumbled output matches what is expected to be generated.
+ */
 testcase(test_jumble_short_seeded)
 {
     char buffer[sizeof(short_test)];

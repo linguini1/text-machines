@@ -1,3 +1,7 @@
+/* This test suite is meant to verify the functionality of the "replace" text
+ * machine, which replaces every instance of the string `old` with the string
+ * `new`. Both the machine's initialization and output behaviour are tested.
+ */
 #include <string.h>
 
 #include "../machines/machines.h"
@@ -19,6 +23,9 @@ static struct txtmac *long_stream(void)
     return minit_buf(long_text, sizeof(long_text));
 }
 
+/* Verifies that in the error case of a NULL input stream, the returned text
+ * machine is also NULL.
+ */
 testcase(test_null_stream)
 {
     struct txtmac *tm = minit_replace(NULL, "hi", "hello");
@@ -26,6 +33,9 @@ testcase(test_null_stream)
     return 1;
 }
 
+/* Verifies that in the error case of a NULL search term, the returned text
+ * machine is also NULL.
+ */
 testcase(test_null_searchterm)
 {
     struct txtmac *tm = minit_replace((struct txtmac *)12, NULL, "hello");
@@ -33,6 +43,9 @@ testcase(test_null_searchterm)
     return 1;
 }
 
+/* Verifies that an empty search term results in no modification of the input
+ * stream.
+ */
 testcase(test_empty_searchterm)
 {
     char buffer[sizeof(one_word)];
@@ -54,6 +67,10 @@ testcase(test_empty_searchterm)
     return 1;
 }
 
+/* Verifies that all instances of the letter 'o' are replaced with 'x' to ensure
+ * that the behaviour is correct for replacing a single character with another
+ * single character.
+ */
 testcase(test_one_letter_replace)
 {
     static const char expected[] = "Ballxxn.\n";
@@ -77,6 +94,10 @@ testcase(test_one_letter_replace)
     return 1;
 }
 
+/* Verifies that all instances of 'oo' are replaced with 'x' to ensure
+ * that the behaviour is correct for replacing a multiple characters with a
+ * different, single character.
+ */
 testcase(test_multi_letter_replace)
 {
     static const char expected[] = "Ballxn.\n";
@@ -100,6 +121,10 @@ testcase(test_multi_letter_replace)
     return 1;
 }
 
+/* Verifies that all instances of 'o' are replaced with 'oo' to ensure
+ * that the behaviour is correct for replacing a single character with multiple
+ * characters.
+ */
 testcase(test_one_letter_replace_multi)
 {
     static const char expected[] = "Balloooon.\n";
@@ -123,6 +148,9 @@ testcase(test_one_letter_replace_multi)
     return 1;
 }
 
+/* Verifies that all instances of 'l' are removed to ensure that the behaviour
+ * is correct for removing a single character.
+ */
 testcase(test_one_letter_remove)
 {
     static const char expected[] = "Baoon.\n";
@@ -146,6 +174,9 @@ testcase(test_one_letter_remove)
     return 1;
 }
 
+/* Verifies that all instances of 'oon' are removed to ensure that the behaviour
+ * is correct for removing a string match.
+ */
 testcase(test_multi_letter_remove)
 {
     static const char expected[] = "Ball.\n";
@@ -169,6 +200,10 @@ testcase(test_multi_letter_remove)
     return 1;
 }
 
+/* Verifies that all instances of 'l' are removed to ensure that the behaviour
+ * is correct for removing a single character with the empty string instead of
+ * NULL as the replacement term.
+ */
 testcase(test_one_letter_remove_emptystr)
 {
     static const char expected[] = "Baoon.\n";
@@ -192,6 +227,10 @@ testcase(test_one_letter_remove_emptystr)
     return 1;
 }
 
+/* Verifies that all instances of 'oon' are removed to ensure that the behaviour
+ * is correct for removing a string match with the empty string instead of NULL
+ * as the replacement term.
+ */
 testcase(test_multi_letter_remove_emptystr)
 {
     static const char expected[] = "Ball.\n";
@@ -215,6 +254,9 @@ testcase(test_multi_letter_remove_emptystr)
     return 1;
 }
 
+/* Verifies that 'is' is removed to ensure correct behaviour when removing
+ * multiple string matches.
+ */
 testcase(test_long_remove_is)
 {
     static const char expected[] =
@@ -240,6 +282,10 @@ testcase(test_long_remove_is)
     return 1;
 }
 
+/* Verifies that 'is' is removed to ensure correct behaviour when removing
+ * multiple string matches where the empty string is used instead of NULL for
+ * the replacement term.
+ */
 testcase(test_long_remove_is_emptystr)
 {
     static const char expected[] =
@@ -265,6 +311,9 @@ testcase(test_long_remove_is_emptystr)
     return 1;
 }
 
+/* Verifies that 'sentences' is removed to ensure that a long string match can
+ * be successfully removed.
+ */
 testcase(test_long_remove_word)
 {
     static const char expected[] =
@@ -290,6 +339,9 @@ testcase(test_long_remove_word)
     return 1;
 }
 
+/* Verifies that 'sentences' is replaced by 'beagles' to ensure that behaviour
+ * is correct when replacing a long word with another long word.
+ */
 testcase(test_long_replace_word)
 {
     static const char expected[] =

@@ -1,6 +1,13 @@
+/* This test suite is meant to verify the functionality of the "letter" text
+ * machine, which outputs a single letter `count` times (or infinitely if count
+ * is 0). Both the machine's initialization and output behaviour are tested.
+ */
 #include "../machines/machines.h"
 #include "test.h"
 
+/* Verify that parameters ('a', 1) result in the letter 'a' being output once,
+ * followed by an EOF character.
+ */
 testcase(test_one_letter)
 {
     struct txtmac *tm = minit_letter('a', 1);
@@ -11,6 +18,9 @@ testcase(test_one_letter)
     return 1;
 }
 
+/* Verify that parameters ('m', 5) result in the letter 'm' being output five
+ * times, followed by an EOF character.
+ */
 testcase(test_five_letters)
 {
     struct txtmac *tm = minit_letter('m', 5);
@@ -25,6 +35,9 @@ testcase(test_five_letters)
     return 1;
 }
 
+/* Verify that parameters ('m', 0) result in the letter 'm' being output
+ * "infinite" times (check 1000 `next` calls).
+ */
 testcase(test_infinite_letters)
 {
     struct txtmac *tm = minit_letter('m', 0);
