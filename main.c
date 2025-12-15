@@ -51,22 +51,18 @@ int main(int argc, char **argv)
 
     /* Create our operations to apply */
 
-    struct txtmac *tm = minit_jumbler(stream);
-    nullcheck(tm, "Couldn't init jumbler text machine.\n");
-    struct txtmac *upper = minit_applicator(tm, toupper_c);
-    nullcheck(upper, "Couldn't init applicator text machine.\n");
+    struct txtmac *tm = minit_replace(stream, "the", "Thee");
 
     /* Perform silly little operations on the text and output the result to the
      * console
      */
 
-    sink_file(upper, stdout);
+    sink_file(tm, stdout);
 
     /* Clean up */
 
     mdestroy(stream);
     mdestroy(tm);
-    mdestroy(upper);
 
     if (file != stdin)
         {

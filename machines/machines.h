@@ -19,5 +19,6 @@ typedef char(charop)(char);
 
 struct txtmac *minit_applicator(struct txtmac *tm, charop *op);
 struct txtmac *minit_jumbler(struct txtmac *tm);
+struct txtmac *minit_replace(struct txtmac *tm, const char *old, const char *new);
 
 #endif // _MACHINES_H_
