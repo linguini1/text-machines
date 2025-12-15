@@ -7,6 +7,8 @@ int sink_fd(struct txtmac *tm, int fd)
 {
     char buffer[BUFSIZ];
     ssize_t bytes;
+    if (tm == NULL) return EINVAL;
+    if (fd < 0) return EINVAL;
 
     for (;;)
         {
@@ -27,6 +29,8 @@ int sink_file(struct txtmac *tm, FILE *file)
 {
     char buffer[BUFSIZ];
     size_t bytes;
+    if (tm == NULL) return EINVAL;
+    if (file == NULL) return EINVAL;
 
     for (;;)
         {
@@ -51,6 +55,9 @@ int sink_file(struct txtmac *tm, FILE *file)
 size_t sink_buf(struct txtmac *tm, char *buf, size_t n)
 {
     size_t i;
+    if (tm == NULL) return 0;
+    if (buf == NULL) return 0;
+
     for (i = 0; i < n; i++)
         {
             buf[i] = tm->next(tm);
@@ -63,5 +70,5 @@ size_t sink_buf(struct txtmac *tm, char *buf, size_t n)
 
     /* Return bytes written */
 
-    return i;
+    return i + 1;
 }
