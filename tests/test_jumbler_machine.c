@@ -147,6 +147,23 @@ testcase(test_jumble_short_seeded)
     return 1;
 }
 
+/* Verify that EOF is returned in the error case when the self-reference to
+ * 'next' is NULL.
+ */
+testcase(test_null_selfref)
+{
+    struct txtmac *stream = short_stream();
+    struct txtmac *tm = minit_jumbler(stream);
+    assert(tm != NULL);
+
+    assert(tm->next(NULL) == EOF);
+
+    mdestroy(stream);
+    mdestroy(tm);
+    return 1;
+}
+
+
 int main(void)
 {
     start_tests();
@@ -155,6 +172,7 @@ int main(void)
     run_test(test_jumble_short);
     run_test(test_jumble_long);
     run_test(test_jumble_short_seeded);
+    run_test(test_null_selfref);
 
     end_tests();
     return test_result_retcode();

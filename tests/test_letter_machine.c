@@ -15,6 +15,7 @@ testcase(test_one_letter)
 
     assert(tm->next(tm) == 'a');
     assert(tm->next(tm) == EOF);
+    mdestroy(tm);
     return 1;
 }
 
@@ -32,6 +33,7 @@ testcase(test_five_letters)
         }
 
     assert(tm->next(tm) == EOF);
+    mdestroy(tm);
     return 1;
 }
 
@@ -48,6 +50,19 @@ testcase(test_infinite_letters)
             assert(tm->next(tm) == 'm');
         }
 
+    mdestroy(tm);
+    return 1;
+};
+
+/* Verify that EOF is returned in the error case when the self-reference to
+ * 'next' is NULL.
+ */
+testcase(test_null_selfref)
+{
+    struct txtmac *tm = minit_letter('m', 0);
+    assert(tm != NULL);
+    assert(tm->next(NULL) == EOF);
+    mdestroy(tm);
     return 1;
 };
 
@@ -58,6 +73,7 @@ int main(void)
     run_test(test_one_letter);
     run_test(test_five_letters);
     run_test(test_infinite_letters);
+    run_test(test_null_selfref);
 
     end_tests();
     return test_result_retcode();

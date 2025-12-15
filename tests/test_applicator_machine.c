@@ -87,6 +87,21 @@ testcase(test_null_stream)
     return 1;
 }
 
+/* Verify that EOF is returned in the error case when the self-reference to
+ * 'next' is NULL.
+ */
+testcase(test_null_selfref)
+{
+    struct txtmac *stream = dummy_stream();
+    struct txtmac *tm = minit_applicator(stream, tolower_c);
+
+    assert(tm->next(NULL) == EOF);
+
+    mdestroy(stream);
+    mdestroy(tm);
+    return 1;
+}
+
 int main(void)
 {
     start_tests();
@@ -95,6 +110,7 @@ int main(void)
     run_test(test_upper);
     run_test(test_null_op);
     run_test(test_null_stream);
+    run_test(test_null_selfref);
 
     end_tests();
     return test_result_retcode();

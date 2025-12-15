@@ -92,6 +92,24 @@ early_ret:
     return res;
 }
 
+/* Verify that EOF is returned in the error case when the self-reference to
+ * 'next' is NULL.
+ */
+testcase(test_null_selfref)
+{
+    int fd = open("examples/hello.txt", O_RDONLY);
+    assert(fd >= 0);
+
+    struct txtmac *fdmac = minit_fd(fd);
+    assert(fdmac != NULL);
+
+    assert(fdmac->next(NULL) == EOF);
+
+    mdestroy(fdmac);
+    close(fd);
+    return 1;
+}
+
 int main(void)
 {
     start_tests();
@@ -99,6 +117,7 @@ int main(void)
     run_test(test_invalid_fd);
     run_test(test_helloworld_fd);
     run_test(test_helloworld_sink);
+    run_test(test_null_selfref);
 
     end_tests();
     return test_result_retcode();

@@ -62,11 +62,24 @@ testcase(test_full_buf_sink)
     return 1;
 }
 
+/* Verify that EOF is returned in the error case when the self-reference to
+ * 'next' is NULL.
+ */
+testcase(test_null_selfref)
+{
+    char testbuf[] = "This is a test buffer.";
+    struct txtmac *tm = minit_buf(testbuf, sizeof(testbuf));
+    assert(tm->next(NULL) == EOF);
+    mdestroy(tm);
+    return 1;
+}
+
 int main(void)
 {
     start_tests();
 
     run_test(test_null_buf);
+    run_test(test_null_selfref);
     run_test(test_full_buf_nextchar);
     run_test(test_full_buf_sink);
 

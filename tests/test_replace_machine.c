@@ -33,6 +33,21 @@ testcase(test_null_stream)
     return 1;
 }
 
+/* Verify that EOF is returned in the error case when the self-reference to
+ * 'next' is NULL.
+ */
+testcase(test_null_selfref)
+{
+    struct txtmac *stream = oneword_stream();
+    struct txtmac *tm = minit_replace(stream, "", "a");
+
+    assert(tm->next(NULL) == EOF);
+
+    mdestroy(tm);
+    mdestroy(stream);
+    return 1;
+}
+
 /* Verifies that in the error case of a NULL search term, the returned text
  * machine is also NULL.
  */
@@ -372,6 +387,7 @@ int main(void)
     start_tests();
 
     run_test(test_null_stream);
+    run_test(test_null_selfref);
     run_test(test_null_searchterm);
     run_test(test_empty_searchterm);
     run_test(test_one_letter_replace);
