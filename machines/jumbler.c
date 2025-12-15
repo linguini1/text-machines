@@ -121,11 +121,10 @@ static char jumbler_next(struct txtmac *tm)
 
 struct txtmac *minit_jumbler(struct txtmac *tm)
 {
+    if (tm == NULL) return NULL;
+
     struct jumbler *priv = malloc(sizeof(struct jumbler));
-    if (priv == NULL)
-        {
-            return NULL;
-        }
+    if (priv == NULL) return NULL;
 
     priv->src = tm;
     priv->bufidx = 0;
