@@ -110,6 +110,24 @@ followed by the `EOF` character.
 The returned text machine will be `NULL` if the provided stream is `NULL` or if the provided function pointer to `op` is
 `NULL`.
 
+### Caesar
+
+This text machine applies a Caesar cipher (left shift) to the text. It can be used as follows:
+
+```c
+char mytext[] = "This is some text! And some more!";
+struct txtmac *stream = minit_buf(mytext, sizeof(mytext));
+struct txtmac *tm = minit_caesar(stream, 3);
+```
+
+The output of the machine `tm` would be:
+```
+Wklv lv vrph whaw! Dqg vrph pruh!
+```
+followed by the `EOF` character.
+
+The returned text machine will be `NULL` if the provided stream is `NULL`, or if the shift exceeds 25.
+
 ### Capitalize
 
 This text machine capitalizes text according to punctuation rules (capital letters follow punctuation). It can be used

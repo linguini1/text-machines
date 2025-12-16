@@ -102,4 +102,16 @@ struct txtmac *minit_replace(struct txtmac *tm, const char *old,
  */
 struct txtmac *minit_capitalize(struct txtmac *tm);
 
+/* Creates and initializes a "caesar" text machine.
+ *
+ * - tm: The text machine whose output is to be modified by the "caesar"
+ *   text machine. Cannot be NULL.
+ * - shift: The shift (left) to use for the Caesar cipher. Must be between 0
+ *   and 25.
+ *
+ * Returns: A pointer to a "caesar" text machine allocated on the heap, or
+ * NULL if there was an error.
+ */
+struct txtmac *minit_caesar(struct txtmac *tm, unsigned shift);
+
 #endif // _MACHINES_H_
