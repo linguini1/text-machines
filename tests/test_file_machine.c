@@ -15,7 +15,7 @@
  */
 testcase(test_invalid_file)
 {
-    struct txtmac *filemac = minit_file(NULL);
+    struct txtmac *filemac = minit_file(NULL, 0);
     assert(filemac == NULL);
     return 1;
 }
@@ -28,7 +28,7 @@ testcase(test_helloworld_file)
     FILE *file = fopen("examples/hello.txt", "r");
     assert(file != NULL);
 
-    struct txtmac *fmac = minit_file(file);
+    struct txtmac *fmac = minit_file(file, BUFSIZ);
     assert(fmac != NULL);
 
     assert(fmac->next(fmac) == 'H');
@@ -40,10 +40,9 @@ testcase(test_helloworld_file)
     return 1;
 }
 
-/* Verifies that the first few characters of the text machine output match the
- * characters in the backing file.
- */
-testcase(test_helloworld_file_sink)
+/* Parameterizes the hello world file sink test with a buffer size. */
+
+static int helloworld_file_sink(size_t bufsiz)
 {
     int res = 1;
     char buffer[64];
@@ -52,7 +51,7 @@ testcase(test_helloworld_file_sink)
     FILE *file = fopen("examples/hello.txt", "r");
     assert(file != NULL);
 
-    struct txtmac *fmac = minit_file(file);
+    struct txtmac *fmac = minit_file(file, bufsiz);
     assert(fmac != NULL);
 
     /* Gather text machine output */
@@ -90,6 +89,21 @@ early_ret:
     return res;
 }
 
+/* Verifies that the first few characters of the text machine output match the
+ * characters in the backing file.
+ */
+testcase(test_helloworld_file_sink) { return helloworld_file_sink(BUFSIZ); }
+
+/* Verifies that the first few characters of the text machine output match the
+ * characters in the backing file when no buffering is used.
+ */
+testcase(test_helloworld_file_sink_nobuf) { return helloworld_file_sink(0); }
+
+/* Verifies that the first few characters of the text machine output match the
+ * characters in the backing file when a small buffer is used.
+ */
+testcase(test_helloworld_file_sink_smallbuf) { return helloworld_file_sink(7); }
+
 /* Verify that EOF is returned in the error case when the self-reference to
  * 'next' is NULL.
  */
@@ -98,7 +112,7 @@ testcase(test_null_selfref)
     FILE *file = fopen("examples/hello.txt", "r");
     assert(file != NULL);
 
-    struct txtmac *fmac = minit_file(file);
+    struct txtmac *fmac = minit_file(file, 0);
     assert(fmac != NULL);
 
     assert(fmac->next(NULL) == EOF);
@@ -115,6 +129,8 @@ int main(void)
     run_test(test_invalid_file);
     run_test(test_helloworld_file);
     run_test(test_helloworld_file_sink);
+    run_test(test_helloworld_file_sink_nobuf);
+    run_test(test_helloworld_file_sink_smallbuf);
     run_test(test_null_selfref);
 
     end_tests();
