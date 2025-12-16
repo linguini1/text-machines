@@ -2,7 +2,7 @@
 
 A silly interface for creating state machines that act on ASCII text inputs.
 
-To read documentation about the provided text machines, see [this document](./machines/docs.md)
+To read documentation about the provided text machines, see [this document](./machines/docs.md).
 
 ## Building
 

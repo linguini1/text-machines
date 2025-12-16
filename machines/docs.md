@@ -5,7 +5,7 @@ This document describes the behaviour of the implemented text machines.
 In general, all text machines have a private state and a `next()` function which returns their next character of output.
 Once a text machine has no more output to give, it will return an `EOF` character.
 
-All text machines returned my `minit_*` functions are `malloc`'d and must be freed using the provided `mdestroy()`
+All text machines returned by `minit_*` functions are `malloc`'d and must be freed using the provided `mdestroy()`
 function.
 
 ## Generative Machines
