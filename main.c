@@ -44,7 +44,7 @@ int main(int argc, char **argv)
 
     /* Turn the input file into a generative text machine */
 
-    struct txtmac *stream = minit_file(file);
+    struct txtmac *stream = minit_file(file, BUFSIZ);
     nullcheck(stream, "Couldn't init file stream text machine.\n");
 
     /* Create our operations to apply */
