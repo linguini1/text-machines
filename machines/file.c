@@ -7,7 +7,8 @@ struct charfile
 {
     struct txtmac tm;
     FILE *src;
-    char buf[BUFSIZ];
+    char *buf;
+    size_t bufsiz;
     size_t count;
     size_t idx;
 };
@@ -16,6 +17,10 @@ static char file_next(struct txtmac *tm)
 {
     struct charfile *priv = (struct charfile *)tm;
     if (tm == NULL) return EOF;
+
+    /* If configured with no buffering, just read a single character */
+
+    if (priv->buf == NULL) return fgetc(priv->src);
 
     /* If there are buffered contents left, use those */
 
@@ -27,9 +32,9 @@ static char file_next(struct txtmac *tm)
     /* Re-fill the buffer if there is nothing left */
 
     priv->idx = 0;
-    priv->count = fread(priv->buf, sizeof(char), sizeof(priv->buf), priv->src);
+    priv->count = fread(priv->buf, sizeof(char), priv->bufsiz, priv->src);
 
-    if (priv->count < sizeof(priv->buf))
+    if (priv->count < priv->bufsiz)
         {
             if (ferror(priv->src))
                 {
@@ -45,7 +50,20 @@ static char file_next(struct txtmac *tm)
     return priv->buf[priv->idx++];
 }
 
-struct txtmac *minit_file(FILE *src)
+static void file_destroy(struct txtmac *tm)
+{
+    struct charfile *priv = (struct charfile *)tm;
+    if (priv == NULL) return;
+
+    free(priv->buf);
+    priv->buf = NULL;
+
+    priv->src = NULL;
+    priv->tm.priv = NULL;
+    free(priv);
+}
+
+struct txtmac *minit_file(FILE *src, size_t bufsiz)
 {
     if (src == NULL) return NULL;
 
@@ -55,9 +73,27 @@ struct txtmac *minit_file(FILE *src)
     priv->src = src;
     priv->count = 0;
     priv->idx = 0;
+    priv->bufsiz = bufsiz;
+
+    /* Allocate buffer */
+
+    if (bufsiz == 0)
+        {
+            priv->buf = NULL;
+        }
+    else
+        {
+            priv->buf = malloc(bufsiz * sizeof(char));
+            if (priv->buf == NULL)
+                {
+                    free(priv);
+                    return NULL;
+                }
+        }
 
     priv->tm.priv = priv;
     priv->tm.next = file_next;
+    priv->tm.destroy = file_destroy;
 
     return &priv->tm;
 }

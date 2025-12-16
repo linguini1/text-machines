@@ -36,11 +36,12 @@ FILE *myfile = fopen("path/to/myfile.txt", "r");
 if (myfile == NULL) {
     /* Error handling */
 }
-struct txtmac *stream = minit_file(myfile);
+struct txtmac *stream = minit_file(myfile, 1024);
 ```
 
 This will allow other machines to iterate over the file character by character. When the end of the file is reached,
-this machine will output `EOF` to signal the end of its contents.
+this machine will output `EOF` to signal the end of its contents. The machine will buffer up to `bufsiz` characters at
+once. If `bufsiz = 0`, no buffering will be performed and the file will be read character by character.
 
 If the passed `file` is `NULL`, the returned text machine will be null.
 
@@ -53,11 +54,12 @@ int *myfd = open("path/to/myfile.txt", O_RDONLY);
 if (myfd < 0) {
     /* Error handling */
 }
-struct txtmac *stream = minit_fd(myfd);
+struct txtmac *stream = minit_fd(myfd, 1024);
 ```
 
 This will allow other machines to iterate over the file character by character. When the end of the file is reached,
-this machine will output `EOF` to signal the end of its contents.
+this machine will output `EOF` to signal the end of its contents. The machine will buffer up to `bufsiz` characters at
+once. If `bufsiz = 0`, no buffering will be performed and the file will be read character by character.
 
 If the passed file descriptor is negative, the returned text machine will be `NULL`.
 

@@ -13,22 +13,24 @@
  *
  * - src: A non-null FILE pointer where the machine output will be obtained
  *   from.
+ * - bufsiz: The size of the buffer to use for buffering output.
  *
  * Returns: A pointer to a "file" text machine allocated on the heap, or NULL if
  * there was an error.
  */
-struct txtmac *minit_file(FILE *src);
+struct txtmac *minit_file(FILE *src, size_t bufsiz);
 
 /* Creates and initializes a "file descriptor" text machine whose output will be
  * drawn from the file associated with `fd`.
  *
  * - fd: A non-negative file descriptor where the machine output will be
  *   obtained from.
+ * - bufsiz: The size of the buffer to use for buffering output.
  *
  * Returns: A pointer to a "file descriptor" text machine allocated on the heap,
  * or NULL if there was an error.
  */
-struct txtmac *minit_fd(int fd);
+struct txtmac *minit_fd(int fd, size_t bufsiz);
 
 /* Creates and initializes a "buffer" text machine whose output will be
  * drawn from the provided buffer.

@@ -53,6 +53,7 @@ struct txtmac *minit_capitalize(struct txtmac *tm)
 
     priv->tm.priv = priv;
     priv->tm.next = capitalize_next;
+    priv->tm.destroy = NULL;
 
     return &priv->tm;
 }

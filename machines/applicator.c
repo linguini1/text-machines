@@ -27,6 +27,7 @@ struct txtmac *minit_applicator(struct txtmac *tm, charop *op)
 
     priv->tm.priv = priv;
     priv->tm.next = applicator_next;
+    priv->tm.destroy = NULL;
 
     return &priv->tm;
 }

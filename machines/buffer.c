@@ -34,6 +34,7 @@ struct txtmac *minit_buf(const char *buf, size_t n)
 
     priv->tm.priv = priv;
     priv->tm.next = buf_next;
+    priv->tm.destroy = NULL;
 
     return &priv->tm;
 }

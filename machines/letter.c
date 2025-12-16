@@ -40,6 +40,7 @@ struct txtmac *minit_letter(char letter, size_t count)
 
     priv->tm.priv = priv;
     priv->tm.next = letter_next;
+    priv->tm.destroy = NULL;
 
     return &priv->tm;
 }

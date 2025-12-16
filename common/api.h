@@ -10,11 +10,18 @@ struct txtmac
     /* This function returns the next character to be output by the text
      * machine.
      *
-     * - tm: A reference to this text machine (itself). Cannot be NULL.
+     * - self: A reference to this text machine. Cannot be NULL.
      *
      * Returns: The next character to be output by this text machine.
      */
-    char (*next)(struct txtmac *tm);
+    char (*next)(struct txtmac *self);
+
+    /* This function performs the tear-down/destruction logic for the text
+     * machine.
+     *
+     * - self: A reference to this text machine. Cannot be NULL.
+     */
+    void (*destroy)(struct txtmac *self);
 
     /* This member contains private lower-half information from the text machine
      * implementation. It must be allocated using `malloc` and safe to call
