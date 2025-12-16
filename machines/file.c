@@ -58,6 +58,7 @@ struct txtmac *minit_file(FILE *src)
 
     priv->tm.priv = priv;
     priv->tm.next = file_next;
+    priv->tm.destroy = NULL;
 
     return &priv->tm;
 }

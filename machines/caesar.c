@@ -40,6 +40,7 @@ struct txtmac *minit_caesar(struct txtmac *tm, unsigned shift)
 
     priv->tm.priv = priv;
     priv->tm.next = caesar_next;
+    priv->tm.destroy = NULL;
 
     return &priv->tm;
 }

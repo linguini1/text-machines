@@ -135,6 +135,7 @@ struct txtmac *minit_jumbler(struct txtmac *tm)
 
     priv->tm.priv = priv;
     priv->tm.next = jumbler_next;
+    priv->tm.destroy = NULL;
 
     return &priv->tm;
 }

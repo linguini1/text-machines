@@ -151,6 +151,7 @@ struct txtmac *minit_replace(struct txtmac *tm, const char *old,
 
     priv->tm.priv = priv;
     priv->tm.next = replace_next;
+    priv->tm.destroy = NULL;
 
     return &priv->tm;
 }

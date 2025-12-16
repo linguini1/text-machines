@@ -52,6 +52,7 @@ struct txtmac *minit_fd(int fd)
 
     priv->tm.priv = priv;
     priv->tm.next = fd_next;
+    priv->tm.destroy = NULL;
 
     return &priv->tm;
 }
