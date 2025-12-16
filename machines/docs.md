@@ -110,6 +110,25 @@ followed by the `EOF` character.
 The returned text machine will be `NULL` if the provided stream is `NULL` or if the provided function pointer to `op` is
 `NULL`.
 
+### Capitalize
+
+This text machine capitalizes text according to punctuation rules (capital letters follow punctuation). It can be used
+as follows:
+
+```c
+char mytext[] = "this is some text! and some more!";
+struct txtmac *stream = minit_buf(mytext, sizeof(mytext));
+struct txtmac *tm = minit_capitalize(stream);
+```
+
+The output of the machine `tm` would be:
+```
+This is some text! And some more!
+```
+followed by the `EOF` character.
+
+The returned text machine will be `NULL` if the provided stream is `NULL`.
+
 ### Jumbler
 
 This text machine is based on the implementation of the [jumbler][jumbler] project, which programmatically creates the

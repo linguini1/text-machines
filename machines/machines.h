@@ -92,4 +92,14 @@ struct txtmac *minit_jumbler(struct txtmac *tm);
 struct txtmac *minit_replace(struct txtmac *tm, const char *old,
                              const char *new);
 
+/* Creates and initializes a "capitalize" text machine.
+ *
+ * - tm: The text machine whose output is to be modified by the "capitalize"
+ *   text machine. Cannot be NULL.
+ *
+ * Returns: A pointer to a "capitalize" text machine allocated on the heap, or
+ * NULL if there was an error.
+ */
+struct txtmac *minit_capitalize(struct txtmac *tm);
+
 #endif // _MACHINES_H_
