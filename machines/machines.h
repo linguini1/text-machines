@@ -116,4 +116,15 @@ struct txtmac *minit_capitalize(struct txtmac *tm);
  */
 struct txtmac *minit_caesar(struct txtmac *tm, unsigned shift);
 
+/* Creates and initializes a "store" text machine.
+ *
+ * - tm: The text machine whose output is to be modified by the "store"
+ *   text machine. Cannot be NULL.
+ * - bufsiz: The size of the temporary store in characters
+ *
+ * Returns: A pointer to a "store" text machine allocated on the heap, or
+ * NULL if there was an error.
+ */
+struct txtmac *minit_store(struct txtmac *tm, size_t bufsiz);
+
 #endif // _MACHINES_H_

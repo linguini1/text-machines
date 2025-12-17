@@ -219,4 +219,24 @@ If the `old` parameter (search term) is `NULL` or the stream is `NULL`, the retu
 `old` parameter is the empty string `""`, the text will not be modified regardless of the `new` (replacement text)
 parameter's value.
 
+### Store
+
+This text machine does not modify the input stream, but stores up to `bufsiz` characters of it in a buffer. This can be
+used as an intermediate store in a text machine chain for text machines that have computationally heavy `next()` calls.
+
+```c
+char mytext[] = "This is some text! And some more!";
+struct txtmac *stream = minit_buf(mytext, sizeof(mytext));
+struct txtmac *tm = minit_store(stream, 1024);
+```
+
+The output of the machine `tm` would be:
+```
+This is some text! And some more!
+```
+followed by the `EOF` character.
+
+The returned text machine will be `NULL` if the provided stream is `NULL`. A `bufsiz` argument of 0 will result in no
+buffering being performed. In this case, it is better to not include the store machine in the chain at all.
+
 [jumbler]: https://github.com/linguini1/jumbler
