@@ -127,4 +127,16 @@ struct txtmac *minit_caesar(struct txtmac *tm, unsigned shift);
  */
 struct txtmac *minit_store(struct txtmac *tm, size_t bufsiz);
 
+/* Creates and initializes a "hidden message" text machine.
+ *
+ * - tm: The text machine whose output is to be modified by the "store"
+ *   text machine. Cannot be NULL.
+ * - msg: A null-terminated string representing the hidden message. Cannot be
+ *   NULL.
+ *
+ * Returns: A pointer to a "hidden message" text machine allocated on the heap,
+ * or NULL if there was an error.
+ */
+struct txtmac *minit_hmsg(struct txtmac *tm, const char *msg);
+
 #endif // _MACHINES_H_

@@ -149,6 +149,25 @@ followed by the `EOF` character.
 
 The returned text machine will be `NULL` if the provided stream is `NULL`.
 
+### Hidden Message
+
+This text machine encodes a hidden message in the input stream by changing the case of matching letters in order. If the
+message cannot be entirely encoded in the input stream, it is appended to the end of the stream.
+
+```c
+char mytext[] = "This is some text! And some more!";
+struct txtmac *stream = minit_buf(mytext, sizeof(mytext));
+struct txtmac *tm = minit_store(stream, "hi");
+```
+
+The output of the machine `tm` would be:
+```
+THIs is some text! And some more!
+```
+followed by the `EOF` character.
+
+The returned text machine will be `NULL` if the provided stream is `NULL`, or if the provided message is `NULL`.
+
 ### Jumbler
 
 This text machine is based on the implementation of the [jumbler][jumbler] project, which programmatically creates the
